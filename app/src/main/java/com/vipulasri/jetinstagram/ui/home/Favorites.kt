@@ -1,6 +1,5 @@
 package com.vipulasri.jetinstagram.ui.home
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -24,10 +24,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,11 +40,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.vipulasri.jetinstagram.R
-import androidx.compose.ui.res.fontResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
@@ -75,8 +71,8 @@ fun Favorites(){
                 modifier = Modifier
                     .clickable { /* Handle left icon click */ }
                     .size(35.dp),
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
+                imageVector = Icons.Default.Close,
+                contentDescription = "Close",
                 )
 
 
@@ -98,8 +94,8 @@ fun Favorites(){
                 modifier = Modifier
                     .clickable { /* Handle right icon click */ }
                     .size(35.dp),
-                imageVector = Icons.Default.Close,
-                contentDescription = "Forward"
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add"
             )
         }
 
@@ -121,15 +117,14 @@ fun Favorites(){
         SearchBox(onSearchTextChanged = { /*TODO*/ })
 
         val items = listOf(
-            Item("Account Name 1", "Description 1", R.drawable.ic_dm),
-            Item("Account Name 2", "Description 2", R.drawable.ic_filled_favorite),
-            Item("Account Name 3", "Description 3", R.drawable.ic_filled_bookmark),
-            Item("Account Name 4", "Description 4", R.drawable.ic_instagram),
-            Item("Account Name 5", "Description 5", R.drawable.ic_outlined_camera),
-            Item("Account Name 6", "Description 6", R.drawable.ic_filled_home)
-
-
+            Item("Account Name 1", "accountTag1", R.drawable.ic_dm),
+            Item("Account Name 2", "accountTag2", R.drawable.ic_filled_favorite),
+            Item("Account Name 3", "accountTag3", R.drawable.ic_filled_bookmark),
+            Item("Account Name 4", "accountTag4", R.drawable.ic_instagram),
+            Item("Account Name 5", "accountTag5", R.drawable.ic_outlined_camera),
+            Item("Account Name 6", "accountTag6", R.drawable.ic_filled_home)
         )
+
         AccountsList(items = items)
     }
 
@@ -153,6 +148,7 @@ fun SearchBox(
 
 
         TextField(
+
             value = searchText,
             onValueChange = {
                 searchText = it
@@ -160,11 +156,16 @@ fun SearchBox(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            placeholder = { Text(placeholderText) },
+                .padding(16.dp)
+                .height(50.dp)
+                .background(color = Color.LightGray, shape = RoundedCornerShape(16.dp))
+                .padding(horizontal = 16.dp),
+            placeholder = { Text(
+                text = placeholderText
+            ) },
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface
+                backgroundColor = Color.LightGray
             ),
             shape = RoundedCornerShape(8.dp)
         )
@@ -172,13 +173,10 @@ fun SearchBox(
 
 }
 
-data class Item(val title: String, val description: String, var image: Int)
+data class Item(val accountName: String, val accountTagName: String, var image: Int)
 
 @Composable
 fun AccountsList(items:List<Item>) {
-
-
-
     LazyColumn {
         items(items) { item ->
             Card(
@@ -196,24 +194,41 @@ fun AccountsList(items:List<Item>) {
                         contentDescription = null, // You can provide a content description if needed
                         modifier = Modifier.size(48.dp) // Adjust size as needed
                     )
+
+
                     Column(
                         modifier = Modifier
-                            .padding(start = 8.dp)
-                            .align(Alignment.CenterVertically)
+                            .width(230.dp)
+                            .padding(start = 20.dp)
                     ) {
                         // Content inside each card
                         Text(
-                            text = item.title,
-                            modifier = Modifier
-                                .fillMaxWidth(),
+                            text = item.accountName,
+                            modifier = Modifier,
                             textAlign = TextAlign.Center,
                             style = TextStyle(
                                 fontSize = 20.sp
                             )
                         )
+                        Text(
+                            color = Color.Gray,
+                            text = item.accountTagName,
+                            modifier = Modifier,
+                            textAlign = TextAlign.Center,
+                            style = TextStyle(
+                                fontSize = 15.sp
+                            )
+                        )
+
 
                     }
                     //Text(text = item.description)
+                    Spacer(modifier = Modifier.width(16.dp)) // Add space between Image and Button
+                    Button(
+                        onClick = { /*TODO*/ },
+                    ) {
+                        Text(text = "Add")
+                    } // Add Button here
 
                 }
 
